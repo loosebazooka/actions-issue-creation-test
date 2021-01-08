@@ -1,0 +1,28 @@
+name: "Temporary placeholder for release issue creation to be merged into the release action"
+on:
+  workflow_dispatch:
+    inputs:
+      project:
+        description: Jib project to release
+        required: true
+        default: (build-plan | core | maven | gradle | extension-common | maven-extension | gradle-extension)
+      release_version:
+        description: new release version
+        required: true
+        default: (for example, 0.1.0)
+
+jobs:
+  createissue:
+    name: "Creating tracking issue for release"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: JasonEtco/create-an-issue@v2
+        env:
+         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+         CHANGELOG_URL: "www.google.com"
+         README_URL: "www.yahoo.com"
+         RELEASE_DRAFT: "www.espn.com"
+         RELEASE_PR: "www.amazon.com"
+        with:
+          filename: .github/RELEASE/release_checklist.md
