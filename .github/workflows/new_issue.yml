@@ -17,13 +17,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+
+      - name: Parse Project
+        run: |
+          PROJECT=$( case ${{ github.event.inputs.project }} in
+            extension-common) echo jib-plugins-extension-common ;;
+            maven-extension)  echo jib-maven-plugin-extension-api ;;
+            gradle-extension) echo jib-gradle-plugin-extension-api ;;
+            maven|gradle)     echo jib-${{ github.event.inputs.project }}-plugin ;;
+            *)                echo jib-${{ github.event.inputs.project }} ;;
+          esac )
+          echo "PROJECT=${PROJECT}" >> $GITHUB_ENV
+
       - uses: JasonEtco/create-an-issue@v2
         env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-         RELEASE_NAME: "10"
-         CHANGELOG_URL: "www.google.com"
-         README_URL: "www.yahoo.com"
-         RELEASE_DRAFT: "www.espn.com"
+         RELEASE_NAME: v${{ github.event.inputs.release_version }}-${{ github.event.inputs.project }}
+         CHANGELOG_URL: https://github.com/GoogleContainerTools/jib/${{ env.PROJECT }}/CHANGELOG.md
+         README_URL: "https://github.com/loosebazooka/actions-issue-creation-test/README.md"
+         RELEASE_DRAFT: "https://github.com/loosebazooka/actions-issue-creation-test/releases"
          RELEASE_PR: "www.amazon.com"
         with:
           filename: .github/RELEASE/release_checklist.md
