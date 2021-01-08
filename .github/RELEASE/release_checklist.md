@@ -1,3 +1,8 @@
+---
+title: Release {{ env.RELEASE_NAME }}
+assignees: loosebazooka
+labels: release
+---
 ## Github
 - [ ] Update [CHANGELOG.md]({{ env.CHANGELOG_URL }})
 - [ ] Update [README.md]({{ env.README_URL }})
