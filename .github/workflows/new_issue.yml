@@ -29,6 +29,16 @@ jobs:
           esac )
           echo "PROJECT_NAME=${PROJECT}" >> $GITHUB_ENV
 
+      - name: Create a PR from a known nonsense branch
+        uses: repo-sync/pull-request@v2
+        id: create_pr
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          source_branch: goose
+          pr_title: "${{ github.event.inputs.project }} release v${{ github.event.inputs.release_version }}"
+          pr_body: "To be merged after the release is complete."
+          pr_label: "PR: Merge After Release"
+        
       - name: Draft Maven/Gradle GitHub release
         uses: actions/create-release@v1
         id: create_release
@@ -48,5 +58,6 @@ jobs:
           CHANGELOG_URL: https://github.com/GoogleContainerTools/jib/blob/master/${{ env.PROJECT_NAME }}/CHANGELOG.md
           README_URL: https://github.com/GoogleContainerTools/jib/blob/master/${{ env.PROJECT_NAME }}/README.md
           RELEASE_DRAFT: ${{ steps.create_release.outputs.html_url }}
+          RELEASE_PR: ${{steps.create_pr.outputs.pr_url}}
         with:
           filename: .github/RELEASE/release_checklist.md
