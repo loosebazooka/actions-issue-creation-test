@@ -47,6 +47,7 @@ jobs:
          RELEASE_NAME: v${{ github.event.inputs.release_version }}-${{ github.event.inputs.project }}
          CHANGELOG_URL: https://github.com/GoogleContainerTools/jib/blob/master/${{ env.PROJECT_NAME }}/CHANGELOG.md
          README_URL: https://github.com/GoogleContainerTools/jib/blob/master/${{ env.PROJECT_NAME }}/README.md
-         RELEASE_DRAFT: ${{ steps.create_release.outputs.upload_url }}
+         RELEASE_DRAFT: ${{ steps.create_release.outputs.html_url }}
+         RELEASE_PR: ${{ 
         with:
           filename: .github/RELEASE/release_checklist.md
