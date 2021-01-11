@@ -60,4 +60,4 @@ jobs:
           RELEASE_DRAFT: ${{ steps.create_release.outputs.html_url }}
           RELEASE_PR: ${{steps.create_pr.outputs.pr_url}}
         with:
-          filename: .github/RELEASE/release_checklist.md
+          filename: .github/RELEASE/plugin_release_checklist.md
