@@ -27,15 +27,26 @@ jobs:
             maven|gradle)     echo jib-${{ github.event.inputs.project }}-plugin ;;
             *)                echo jib-${{ github.event.inputs.project }} ;;
           esac )
-          echo "PROJECT=${PROJECT}" >> $GITHUB_ENV
+          echo "PROJECT_NAME=${PROJECT}" >> $GITHUB_ENV
 
+      - name: Draft Maven/Gradle GitHub release
+        uses: actions/create-release@v1
+        id: create_release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ github.event.inputs.release_version }}-${{ github.event.inputs.project }}
+          release_name: ${{ env.PROJECT }} v${{ github.event.inputs.release_version }}
+          draft: true
+          body: |
+            Some nonsense
+        
       - uses: JasonEtco/create-an-issue@v2
         env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
          RELEASE_NAME: v${{ github.event.inputs.release_version }}-${{ github.event.inputs.project }}
-         CHANGELOG_URL: https://github.com/GoogleContainerTools/jib/${{ env.PROJECT }}/CHANGELOG.md
-         README_URL: "https://github.com/loosebazooka/actions-issue-creation-test/README.md"
-         RELEASE_DRAFT: "https://github.com/loosebazooka/actions-issue-creation-test/releases"
-         RELEASE_PR: "www.amazon.com"
+         CHANGELOG_URL: https://github.com/GoogleContainerTools/jib/blob/master/${{ env.PROJECT_NAME }}/CHANGELOG.md
+         README_URL: https://github.com/GoogleContainerTools/jib/blob/master/${{ env.PROJECT_NAME }}/README.md
+         RELEASE_DRAFT: ${{ steps.create_release.outputs.upload_url }}
         with:
           filename: .github/RELEASE/release_checklist.md
