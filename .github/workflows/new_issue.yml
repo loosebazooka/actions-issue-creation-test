@@ -42,6 +42,7 @@ jobs:
       - name: Draft Maven/Gradle GitHub release
         uses: actions/create-release@v1
         id: create_release
+        if: ${{ github.event.inputs.project == 'maven' || github.event.inputs.project == 'gradle' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -52,6 +53,7 @@ jobs:
             Some nonsense
         
       - uses: JasonEtco/create-an-issue@v2
+        if: ${{ github.event.inputs.project == 'maven' || github.event.inputs.project == 'gradle' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           RELEASE_NAME: v${{ github.event.inputs.release_version }}-${{ github.event.inputs.project }}
