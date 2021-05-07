@@ -16,7 +16,7 @@ steps:
   - '--title'
   - '"Hey I made an issue!"'
   - '--body'
-    - '"Too close for missiles, switching to guns"'
+  - '"Too close for missiles, switching to guns"'
   secretEnv: ['GITHUB_TOKEN']
 
 availableSecrets:
