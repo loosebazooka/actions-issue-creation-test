@@ -1,0 +1,25 @@
+steps:
+- name: 'gcr.io/cloud-builders/wget'
+  entrypoint: 'bash'
+  args: 
+  - -c
+  - |
+    wget https://github.com/cli/cli/releases/download/v1.9.2/gh_1.9.2_linux_amd64.tar.gz
+    tar -xzf ./gh_1.9.2_linux_amd64.tar.gz
+- name: 'launcher.gcr.io/google/ubuntu1604'
+  entrypoint: './gh_1.9.2_linux_amd64/bin/gh'
+  args:
+  - 'issue'
+  - 'create'
+  - '--repo'
+  - 'loosebazooka/actions-issue-creation-test' 
+  - '--title'
+  - '"Hey I made an issue!"'
+  - '--body'
+    - '"Too close for missiles, switching to guns"'
+  secretEnv: ['GITHUB_TOKEN']
+
+availableSecrets:
+  secretManager:
+  - versionName: projects/510649871749/secrets/gh_pat_loosebazooka/versions/latest
+    env: 'GITHUB_TOKEN'
